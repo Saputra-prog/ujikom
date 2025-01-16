@@ -3,16 +3,11 @@ import React from "react";
 function navbar() {
   return (
     <div>
-      <nav className="px-8 py-8 flex justify-between bg-blue-400 text-black">
-        <div>
-          <span>logo</span>
-        </div>
-        <button className="space-x-3">
-          <span>home</span>
-          <span>menu</span>
-          <span>promo</span>
-        </button>
-        <div>info meja</div>
+      <nav className="bg-gradient-to-r from-blue-500 to-white px-16 py-8 flex justify space-x-6 shadow-[3px_5px_4px] shadow-gray-500 z-10 relative">
+        <button>logo</button>
+        <button>Daftar Makanan</button>
+        <button>Daftar Minuman</button>
+        <button>Tentang kami</button>
       </nav>
     </div>
   );
