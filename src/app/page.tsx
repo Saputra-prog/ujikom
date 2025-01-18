@@ -5,7 +5,7 @@ import axios from "axios";
 interface Produk {
   id: number;
   namaProduk: string;
-  fotoProduk: string; // Path relative
+  fotoProduk: string;
   hargaProduk: number;
   stokProduk: number;
   createdAt: string;
@@ -13,27 +13,26 @@ interface Produk {
 }
 
 function HomePage() {
-  const [produkList, setProdukList] = useState<Produk[]>([]); // Menyimpan daftar produk
-  const [loading, setLoading] = useState(true); // Menyimpan status loading
-  const [error, setError] = useState<string | null>(null); // Menyimpan pesan error
+  const [produkList, setProdukList] = useState<Produk[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const baseURL = "https://xrzwvx14-4000.asse.devtunnels.ms"; // Base URL API
+  const baseURL = "https://xrzwvx14-4000.asse.devtunnels.ms";
 
   useEffect(() => {
     const fetchProduk = async () => {
       try {
-        const url = `${baseURL}/api/produk`; // Endpoint API
+        const url = `${baseURL}/api/produk`;
         const response = await axios.get(url, { withCredentials: true });
         console.log("Response:", response.data);
 
         const produkData = response.data.produk;
         if (Array.isArray(produkData)) {
-          // Map data untuk memastikan nilai default
           const produkWithDefaults = produkData.map(
             (item: any): Produk => ({
               id: item.id || 0,
               namaProduk: item.namaProduk || "Nama tidak tersedia",
-              fotoProduk: item.fotoProduk || "/placeholder-image.png", // Path relative
+              fotoProduk: item.fotoProduk || "/placeholder-image.png",
               hargaProduk: item.hargaProduk ?? 0,
               stokProduk: item.stokProduk ?? 0,
               createdAt: item.createdAt || "",
@@ -64,32 +63,29 @@ function HomePage() {
   }
 
   return (
-    <div>
-      <h1>Produk</h1>
-      <div>
+    <div className="p-5 bg-[#4DA1A9]">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {produkList.map((produk) => (
           <div
             key={produk.id}
-            style={{
-              border: "1px solid #ccc",
-              margin: "10px",
-              padding: "10px",
-            }}
+            className="bg-white border rounded-lg shadow-md p-4 flex flex-col items-center hover:scale-105 hover:bg-blue-700"
           >
-            <h3>{produk.namaProduk}</h3>
             <img
-              src={`${baseURL}${produk.fotoProduk}`} // Gabungkan base URL dan path relative
+              src={`${baseURL}${produk.fotoProduk}`}
               alt={produk.namaProduk}
-              onError={
-                (e) => (e.currentTarget.src = "/placeholder-image.png") // Placeholder jika gambar gagal dimuat
-              }
-              style={{ width: "150px", height: "150px" }}
+              onError={(e) => (e.currentTarget.src = "/placeholder-image.png")}
+              className="w-full h-40 object-cover mb-3 rounded-lg"
             />
-            <p>Harga: Rp{produk.hargaProduk}</p>
-            <p>
-              Stok:{" "}
-              {produk.stokProduk > 0 ? produk.stokProduk : "Tidak tersedia"}
-            </p>
+            <div className="-translate-x-20">
+              <h3 className=" font-bold">{produk.namaProduk}</h3>
+              <p className="text-orange-500 font-bold mb-1">
+                Rp{produk.hargaProduk.toLocaleString("id-ID")}
+              </p>
+              <p className="text-gray-500">
+                Stok:
+                {produk.stokProduk > 0 ? produk.stokProduk : "Tidak tersedia"}
+              </p>
+            </div>
           </div>
         ))}
       </div>
