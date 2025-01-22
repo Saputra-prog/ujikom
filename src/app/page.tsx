@@ -1,96 +1,90 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import Image from "next/image";
+import { FaGoogle } from "react-icons/fa";
+import { FaFacebook, FaTelegram } from "react-icons/fa";
+import Link from "next/link";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
-interface Produk {
-  id: number;
-  namaProduk: string;
-  fotoProduk: string;
-  hargaProduk: number;
-  stokProduk: number;
-  createdAt: string;
-  updatedAt: string;
-}
+const LoginPage = () => {
+  const [username, setUsername] = useState<any>();
+  const [password, setPassword] = useState<any>();
+  const { push } = useRouter();
 
-function HomePage() {
-  const [produkList, setProdukList] = useState<Produk[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const baseURL = "https://xrzwvx14-4000.asse.devtunnels.ms";
-
-  useEffect(() => {
-    const fetchProduk = async () => {
-      try {
-        const url = `${baseURL}/api/produk`;
-        const response = await axios.get(url, { withCredentials: true });
-        console.log("Response:", response.data);
-
-        const produkData = response.data.produk;
-        if (Array.isArray(produkData)) {
-          const produkWithDefaults = produkData.map(
-            (item: any): Produk => ({
-              id: item.id || 0,
-              namaProduk: item.namaProduk || "Nama tidak tersedia",
-              fotoProduk: item.fotoProduk || "/placeholder-image.png",
-              hargaProduk: item.hargaProduk ?? 0,
-              stokProduk: item.stokProduk ?? 0,
-              createdAt: item.createdAt || "",
-              updatedAt: item.updatedAt || "",
-            })
-          );
-          setProdukList(produkWithDefaults);
-        } else {
-          setError("Data produk tidak valid.");
+  async function submitNCR() {
+    const url = `${process.env.NEXT_PUBLIC_URL}/api/login`;
+    try {
+      // setIsLoading(true);
+      const res = await axios.post(
+        url,
+        {
+          username: username,
+          password: password,
+        },
+        {
+          withCredentials: true,
         }
-      } catch (err) {
-        console.error("Error fetching produk:", err);
-        setError("Terjadi kesalahan saat mengambil data produk.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProduk();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
+      );
+      push("/home");
+    } catch (error: any) {
+      console.log(error);
+      alert(error);
+    }
   }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
   return (
-    <div className="p-5 bg-[#4DA1A9]">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {produkList.map((produk) => (
-          <div
-            key={produk.id}
-            className="bg-white border rounded-lg shadow-md p-4 flex flex-col items-center hover:scale-105 hover:bg-blue-700"
-          >
-            <img
-              src={`${baseURL}${produk.fotoProduk}`}
-              alt={produk.namaProduk}
-              onError={(e) => (e.currentTarget.src = "/placeholder-image.png")}
-              className="w-full h-40 object-cover mb-3 rounded-lg"
-            />
-            <div className="-translate-x-20">
-              <h3 className=" font-bold">{produk.namaProduk}</h3>
-              <p className="text-orange-500 font-bold mb-1">
-                Rp{produk.hargaProduk.toLocaleString("id-ID")}
-              </p>
-              <p className="text-gray-500">
-                Stok:
-                {produk.stokProduk > 0 ? produk.stokProduk : "Tidak tersedia"}
-              </p>
+    <div>
+      <main className="flex flex-col justify-center items-center min-h-screen bg-[#FEFFD2] pt-16">
+        {/* <Image src="/logoHaikal.svg" alt="Logo" width={183} height={86} /> */}
+        <div className="flex min-h-screen">
+          <div className="bg-[#FFEEA9] rounded-lg shadow-lg w-full h-80 mt-4 ">
+            <div className="w-[500px] h-auto p-4 border-2 border-[#FFEEA9] rounded-lg">
+              <label
+                htmlFor="nama"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Nama
+              </label>
+              <input
+                id="username"
+                type="nama"
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your email"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                required
+              />
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                required
+              />
+              <div className="flex justify-center mt-4">
+                <button
+                  className="border px-2 py-2 rounded-lg bg-orange-600 flex justify-center text-white"
+                  onClick={() => {
+                    console.log(username, password);
+                    submitNCR();
+                  }}
+                >
+                  LOGIN
+                </button>
+              </div>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      </main>
     </div>
   );
-}
+};
 
-export default HomePage;
+export default LoginPage;
