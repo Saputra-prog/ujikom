@@ -1,88 +1,87 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
-import { FaGoogle } from "react-icons/fa";
-import { FaFacebook, FaTelegram } from "react-icons/fa";
-import Link from "next/link";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { FaGoogle, FaFacebook, FaTelegram } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState<any>();
-  const [password, setPassword] = useState<any>();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const { push } = useRouter();
 
   async function submitNCR() {
     const url = `${process.env.NEXT_PUBLIC_URL}/api/login`;
     try {
-      // setIsLoading(true);
       const res = await axios.post(
         url,
-        {
-          username: username,
-          password: password,
-        },
-        {
-          withCredentials: true,
-        }
+        { username, password },
+        { withCredentials: true }
       );
       push("/home");
-    } catch (error: any) {
-      console.log(error);
-      alert(error);
+    } catch (error) {
+      alert("Login gagal. Periksa kembali username dan password Anda.");
     }
   }
+
   return (
-    <div>
-      <main className="flex flex-col justify-center items-center min-h-screen bg-[#FEFFD2] pt-16">
-        {/* <Image src="/logoHaikal.svg" alt="Logo" width={183} height={86} /> */}
-        <div className="flex min-h-screen">
-          <div className="bg-[#FFEEA9] rounded-lg shadow-lg w-full h-80 mt-4 ">
-            <div className="w-[500px] h-auto p-4 border-2 border-[#FFEEA9] rounded-lg">
-              <label
-                htmlFor="nama"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Nama
-              </label>
-              <input
-                id="username"
-                type="nama"
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter your email"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required
-              />
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required
-              />
-              <div className="flex justify-center mt-4">
-                <button
-                  className="border px-2 py-2 rounded-lg bg-orange-600 flex justify-center text-white"
-                  onClick={() => {
-                    console.log(username, password);
-                    submitNCR();
-                  }}
-                >
-                  LOGIN
-                </button>
-              </div>
-            </div>
+    <div
+      className="flex justify-center items-center min-h-screen bg-cover bg-center p-4 bg-gradient-to-r from-blue-400 via-slate-300 to-blue-400"
+      // style={{ backgroundImage: "url('/img/kasir1.jpeg')" }}
+    >
+      <div className="w-full max-w-md bg-white bg-opacity-90 rounded-xl shadow-xl shadow-slate-600 p-8 space-y-6">
+        <h1 className="text-3xl font-bold text-center text-blue-600">Login</h1>
+
+        <div className="space-y-4">
+          <div className="relative">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Nama
+            </label>
+            <input
+              id="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Masukkan nama"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Masukkan password"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
           </div>
         </div>
-      </main>
+
+        <button
+          className="w-full bg-blue-500 text-white py-2 rounded-lg text-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+          onClick={submitNCR}
+        >
+          LOGIN
+        </button>
+        {/* 
+        <div className="flex items-center justify-center gap-4 mt-4">
+          <FaGoogle className="text-red-500 text-2xl cursor-pointer hover:scale-110 transition-transform" />
+          <FaFacebook className="text-blue-500 text-2xl cursor-pointer hover:scale-110 transition-transform" />
+          <FaTelegram className="text-blue-400 text-2xl cursor-pointer hover:scale-110 transition-transform" />
+        </div> */}
+      </div>
     </div>
   );
 };

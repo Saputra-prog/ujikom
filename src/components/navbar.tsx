@@ -5,11 +5,19 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 
-function Navbar() {
+const disableNavbar = ["/", "/auths/register"];
+
+export default function Navbar() {
   const pathname = usePathname();
+
+  // Sembunyikan navbar jika halaman ada di dalam disableNavbar
+  if (disableNavbar.includes(pathname)) {
+    return null;
+  }
+
   return (
     <div>
-      <nav className="bg-[#2E5077] px-16 py-8 flex justify text-white fixed-top">
+      <nav className="bg-[#2E5077] px-16 py-8 flex justify-between text-white fixed-top">
         <div>
           <Image
             src="/img/y.png"
@@ -19,19 +27,17 @@ function Navbar() {
             className="bg-white rounded-full"
           />
         </div>
-        <Link href="/home">
-          <div className="hover:bg-[#4DA1A9] rounded-lg px-2 py-2">
+        <div className="flex gap-4">
+          <Link href="/home">
             <button
               className={`rounded-lg px-2 py-2 ${
-                pathname === "/" ? "bg-[#4DA1A9]" : "text-white"
+                pathname === "/home" ? "bg-[#4DA1A9]" : "text-white"
               }`}
             >
               Home
             </button>
-          </div>
-        </Link>
-        <Link href="/makanan">
-          <div className="hover:bg-[#4DA1A9] rounded-lg px-2 py-2">
+          </Link>
+          <Link href="/makanan">
             <button
               className={`rounded-lg px-2 py-2 ${
                 pathname === "/makanan" ? "bg-[#4DA1A9]" : "text-white"
@@ -39,10 +45,8 @@ function Navbar() {
             >
               Daftar Makanan
             </button>
-          </div>
-        </Link>
-        <Link href="/minuman">
-          <div className="hover:bg-[#4DA1A9] rounded-lg px-2 py-2">
+          </Link>
+          <Link href="/minuman">
             <button
               className={`rounded-lg px-2 py-2 ${
                 pathname === "/minuman" ? "bg-[#4DA1A9]" : "text-white"
@@ -50,10 +54,8 @@ function Navbar() {
             >
               Daftar Minuman
             </button>
-          </div>
-        </Link>
-        <Link href="/about">
-          <div className="hover:bg-[#4DA1A9] rounded-lg px-2 py-2">
+          </Link>
+          <Link href="/about">
             <button
               className={`rounded-lg px-2 py-2 ${
                 pathname === "/about" ? "bg-[#4DA1A9]" : "text-white"
@@ -61,16 +63,14 @@ function Navbar() {
             >
               About
             </button>
-          </div>
-        </Link>
-        <div className=" rounded-lg px-2 py-2 translate-x-[800%]">
-          <button className="border rounded-lg px-2 py-2 bg-red-500">
-            logout
-          </button>
+          </Link>
         </div>
+        <Link href="/">
+          <button className="border rounded-lg px-2 py-2 bg-red-500">
+            Logout
+          </button>
+        </Link>
       </nav>
     </div>
   );
 }
-
-export default Navbar;

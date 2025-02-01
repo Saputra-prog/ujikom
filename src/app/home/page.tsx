@@ -25,7 +25,7 @@ function HomePage() {
   useEffect(() => {
     const fetchProduk = async () => {
       try {
-        const url = `${process.env.NEXT_PUBLIC_URL}/api/produk/kategori/makanan`;
+        const url = `${process.env.NEXT_PUBLIC_URL}/api/produk`;
         const response = await axios.get(url, { withCredentials: true });
 
         const produkData = response.data.produk;
@@ -239,14 +239,14 @@ function HomePage() {
                     </p>
                     <div className="flex items-center mt-2">
                       <button
-                        className="bg-red-500 text-white px-2 py-1 rounded"
+                        className="border border-black text-black px-2 py-1 rounded"
                         onClick={() => handleKurangJumlah(produk.id)}
                       >
                         -
                       </button>
                       <span className="mx-3">{produk.jumlah || 1}</span>
                       <button
-                        className="bg-green-500 text-white px-2 py-1 rounded"
+                        className="border border-black text-black px-2 py-1 rounded"
                         onClick={() => handleTambahJumlah(produk.id)}
                       >
                         +
