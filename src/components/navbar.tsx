@@ -5,7 +5,13 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 
-const disableNavbar = ["/", "/auths/register"];
+const disableNavbar = [
+  "/",
+  "/auths/register",
+  "/admin/home",
+  "/admin/riwayat",
+  "/admin/akun",
+];
 
 export default function Navbar() {
   const pathname = usePathname();

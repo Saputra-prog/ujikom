@@ -1,7 +1,15 @@
+"use client";
+
+import Sidebar from "@/components/sidebar";
 import React from "react";
 
 function page() {
-  return <div className="bg-green-700 min-h-screen"></div>;
+  return (
+    <div className="flex min-h-screen">
+      <Sidebar />
+      <div className="bg-green"></div>
+    </div>
+  );
 }
 
 export default page;

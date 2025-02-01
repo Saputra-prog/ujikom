@@ -67,7 +67,7 @@ function Page() {
       );
 
       console.log("Registrasi berhasil:", response.data);
-      alert("Registrasi berhasil!");
+      alert("akun berhasil dibuat");
       router.push("/");
     } catch (error: any) {
       console.error("Error registrasi:", error.response?.data || error.message);
