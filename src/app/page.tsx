@@ -3,13 +3,14 @@ import React, { useState } from "react";
 import { FaGoogle, FaFacebook, FaTelegram } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { error } from "console";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { push } = useRouter();
 
-  async function submitNCR() {
+  async function LOGIN() {
     const url = `${process.env.NEXT_PUBLIC_URL}/api/login`;
     try {
       const res = await axios.post(
@@ -17,8 +18,18 @@ const LoginPage = () => {
         { username, password },
         { withCredentials: true }
       );
-      push("/home");
+      console.log("Response API:", res.data);
+      const userRole = res.data.user?.role;
+
+      if (userRole === "admin") {
+        push("/admin/home");
+      } else if (userRole === "kasir") {
+        push("/home");
+      } else {
+        alert("Role tidak dikenali!");
+      }
     } catch (error) {
+      console.error("Error saat login:", error);
       alert("Login gagal. Periksa kembali username dan password Anda.");
     }
   }
@@ -71,7 +82,7 @@ const LoginPage = () => {
 
         <button
           className="w-full bg-blue-500 text-white py-2 rounded-lg text-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-          onClick={submitNCR}
+          onClick={LOGIN}
         >
           LOGIN
         </button>

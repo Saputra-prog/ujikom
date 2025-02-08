@@ -19,15 +19,29 @@ function Sidebar() {
             className="bg-white rounded-full mb-2"
           />
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2 text-white">
           <div className="rounded-lg">
             <Link
               href="/admin/home"
               className={`block px-4 py-3 rounded-lg transition duration-300 ${
-                pathname === "/admin/home" ? "bg-white" : "hover:bg-white"
+                pathname === "/admin/home"
+                  ? "bg-white text-black"
+                  : "hover:bg-white hover:text-black"
               }`}
             >
               home
+            </Link>
+          </div>
+          <div className=" rounded-lg">
+            <Link
+              href="/admin/tambahp"
+              className={`block px-4 py-3 rounded-lg transition duration-300 ${
+                pathname === "/admin/akun"
+                  ? "bg-white text-black"
+                  : "hover:bg-white hover:text-black"
+              }`}
+            >
+              Tambah Produk
             </Link>
           </div>
 
@@ -35,7 +49,9 @@ function Sidebar() {
             <Link
               href="/admin/riwayat"
               className={`block px-4 py-3 rounded-lg transition duration-300 ${
-                pathname === "/admin/riwayat" ? "bg-white" : "hover:bg-white"
+                pathname === "/admin/riwayat"
+                  ? "bg-white text-black"
+                  : "hover:bg-white hover:text-black"
               }`}
             >
               riwayat
@@ -46,7 +62,9 @@ function Sidebar() {
             <Link
               href="/auths/register"
               className={`block px-4 py-3 rounded-lg transition duration-300 ${
-                pathname === "/auths/register" ? "bg-white" : "hover:bg-white"
+                pathname === "/auths/register"
+                  ? "bg-white text-black"
+                  : "hover:bg-white hover:text-black"
               }`}
             >
               tambah akun
@@ -56,7 +74,9 @@ function Sidebar() {
             <Link
               href="/admin/akun"
               className={`block px-4 py-3 rounded-lg transition duration-300 ${
-                pathname === "/auths/register" ? "bg-white" : "hover:bg-white"
+                pathname === "/admin/akun"
+                  ? "bg-white text-black"
+                  : "hover:bg-white hover:text-black"
               }`}
             >
               akun pegawai

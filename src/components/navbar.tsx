@@ -11,6 +11,7 @@ const disableNavbar = [
   "/admin/home",
   "/admin/riwayat",
   "/admin/akun",
+  "/admin/tambahp",
 ];
 
 export default function Navbar() {
