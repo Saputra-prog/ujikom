@@ -34,7 +34,7 @@ function HomePage() {
             (item: any): Produk => ({
               id: item.id || 0,
               namaProduk: item.namaProduk || "Nama tidak tersedia",
-              fotoProduk: item.fotoProduk || "/placeholder-image.png",
+              fotoProduk: item.fotoProduk || "foto tidak ada",
               hargaProduk: item.hargaProduk ?? 0,
               stokProduk: item.stokProduk ?? 0,
               createdAt: item.createdAt || "",
@@ -182,9 +182,6 @@ function HomePage() {
               <img
                 src={`${process.env.NEXT_PUBLIC_URL}${produk.fotoProduk}`}
                 alt={produk.namaProduk}
-                onError={(e) =>
-                  (e.currentTarget.src = "/placeholder-image.png")
-                }
                 className="w-full h-40 object-cover mb-3 rounded-lg"
               />
               <div

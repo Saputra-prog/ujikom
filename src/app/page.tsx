@@ -36,7 +36,7 @@ const LoginPage = () => {
 
   return (
     <div
-      className="flex justify-center items-center min-h-screen bg-cover bg-center p-4 bg-gradient-to-r from-blue-400 via-slate-300 to-blue-400"
+      className="flex justify-center items-center min-h-screen bg-cover bg-center p-4 bg-gradient-to-r from-blue-400  via-green-400 to-blue-400"
       // style={{ backgroundImage: "url('/img/kasir1.jpeg')" }}
     >
       <div className="w-full max-w-md bg-white bg-opacity-90 rounded-xl shadow-xl shadow-slate-600 p-8 space-y-6">

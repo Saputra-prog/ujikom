@@ -1,40 +1,83 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Sidebar from "@/components/sidebar";
-import React from "react";
 
-const TableComponent = () => {
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  noHp: number;
+  alamat: string;
+  role: string;
+  createdAt: string;
+}
+
+export default function UserTable() {
+  const [users, setUsers] = useState<User[]>([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_URL}/api/user`,
+          { withCredentials: true }
+        );
+        setUsers(response.data.user);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError("Gagal mengambil data user, silakan coba lagi.");
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (error) {
+    return <p className="text-red-500">{error}</p>;
+  }
+
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-gradient-to-r from-blue-400 via-white to-blue-400">
       <Sidebar />
-      <div className="overflow-x-auto flex items-center ml-80 -translate-y-60">
-        <table className="w-full border-collapse border border-gray-300 text-left">
+      <div className="overflow-x-auto w-full max-w-5xl justify-center items-center ml-72 mr-8 mt-8 backdrop: ">
+        <h2 className="text-xl font-bold mb-4 text-center">Daftar Akun</h2>
+        <table className="w-full bg-white border border-gray-300 shadow-md">
           <thead>
-            <tr className="bg-blue-400 text-white">
-              <th className="border border-gray-300 p-2">NO</th>
-              <th className="border border-gray-300 p-2">NAMA</th>
-              <th className="border border-gray-300 p-2">NO HP</th>
-              <th className="border border-gray-300 p-2">ALAMAT</th>
-              <th className="border border-gray-300 p-2">EMAIL</th>
-              <th className="border border-gray-300 p-2">PASSWORD</th>
-              <th className="border border-gray-300 p-2">ROLE</th>
+            <tr className="bg-gray-200 text-gray-700">
+              <th className="px-4 py-2 border">ID</th>
+              <th className="px-4 py-2 border">Username</th>
+              <th className="px-4 py-2 border">Email</th>
+              <th className="px-4 py-2 border">No. HP</th>
+              <th className="px-4 py-2 border">Alamat</th>
+              <th className="px-4 py-2 border">Role</th>
+              <th className="px-4 py-2 border">Dibuat</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border border-gray-300 p-2">-</td>
-              <td className="border border-gray-300 p-2">-</td>
-              <td className="border border-gray-300 p-2">-</td>
-              <td className="border border-gray-300 p-2">-</td>
-              <td className="border border-gray-300 p-2">-</td>
-              <td className="border border-gray-300 p-2">-</td>
-              <td className="border border-gray-300 p-2">-</td>
-            </tr>
+            {users.map((user) => (
+              <tr
+                key={user.id}
+                className="text-center border-b hover:bg-gray-100"
+              >
+                <td className="px-4 py-2 border">{user.id}</td>
+                <td className="px-4 py-2 border">{user.username}</td>
+                <td className="px-4 py-2 border">{user.email}</td>
+                <td className="px-4 py-2 border">{user.noHp}</td>
+                <td className="px-4 py-2 border">{user.alamat}</td>
+                <td className="px-4 py-2 border font-bold text-blue-600">
+                  {user.role}
+                </td>
+                <td className="px-4 py-2 border">
+                  {new Date(user.createdAt).toLocaleDateString()}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
     </div>
   );
-};
-
-export default TableComponent;
+}

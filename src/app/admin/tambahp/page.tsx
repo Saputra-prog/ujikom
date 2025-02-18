@@ -4,13 +4,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import Sidebar from "@/components/sidebar";
 
-const TambahProduk = () => {
+const tambahmenu = () => {
   const [produk, setProduk] = useState({
     namaProduk: "",
     fotoProduk: "",
     hargaProduk: "",
     deskripsiProduk: "",
-    kategoriProduk: "makanan",
+    kategoriProduk: "",
     stokProduk: "",
   });
 
@@ -104,7 +104,7 @@ const TambahProduk = () => {
             Harga Produk
           </label>
           <input
-            type="number"
+            type="any"
             name="hargaProduk"
             value={produk.hargaProduk}
             onChange={handleChange}
@@ -165,7 +165,7 @@ const TambahProduk = () => {
             <div className="flex justify-center mt-6">
               <button
                 type="submit"
-                className="bg-blue-400 text-white py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="border bg-white  text-black py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Tambah Produk
               </button>
@@ -177,4 +177,4 @@ const TambahProduk = () => {
   );
 };
 
-export default TambahProduk;
+export default tambahmenu;

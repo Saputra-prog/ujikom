@@ -34,7 +34,7 @@ function HomePage() {
             (item: any): Produk => ({
               id: item.id || 0,
               namaProduk: item.namaProduk || "Nama tidak tersedia",
-              fotoProduk: item.fotoProduk || "/placeholder-image.png",
+              fotoProduk: item.fotoProduk || "Foto tidak ada",
               hargaProduk: item.hargaProduk ?? 0,
               stokProduk: item.stokProduk ?? 0,
               createdAt: item.createdAt || "",
@@ -102,7 +102,27 @@ function HomePage() {
     setSidebarVisible(false);
   };
 
-  const handlePrintStruk = () => {
+  const kirimPesanan = async () => {
+    try {
+      const url = `${process.env.NEXT_PUBLIC_URL}/api/transaksi`;
+      const payload = {
+        produk: selectedProducts.map((produk) => ({
+          idProduk: produk.id,
+          jumlah: produk.jumlah || 1,
+        })),
+      };
+
+      const response = await axios.post(url, payload, {
+        withCredentials: true,
+      });
+
+      console.log("Transaksi berhasil dikirim:", response.data);
+    } catch (err) {
+      console.error("Gagal mengirim transaksi:", err);
+    }
+  };
+
+  const handlePrintStruk = async () => {
     const doc = new jsPDF();
 
     doc.setFontSize(16);
@@ -148,6 +168,7 @@ function HomePage() {
     );
 
     doc.save("struk-pembelian.pdf");
+    await kirimPesanan();
   };
 
   const totalHarga = selectedProducts.reduce(
@@ -182,9 +203,6 @@ function HomePage() {
               <img
                 src={`${process.env.NEXT_PUBLIC_URL}${produk.fotoProduk}`}
                 alt={produk.namaProduk}
-                onError={(e) =>
-                  (e.currentTarget.src = "/placeholder-image.png")
-                }
                 className="w-full h-40 object-cover mb-3 rounded-lg"
               />
               <div

@@ -9,7 +9,7 @@ function Sidebar() {
 
   return (
     <div>
-      <nav className="bg-blue-400 w-64 h-screen flex flex-col p-4">
+      <nav className="bg-blue-400 w-64 h-[100vh] fixed flex flex-col p-4">
         <div className="flex justify-center">
           <img
             src={"/img/y.png"}
@@ -36,7 +36,7 @@ function Sidebar() {
             <Link
               href="/admin/tambahp"
               className={`block px-4 py-3 rounded-lg transition duration-300 ${
-                pathname === "/admin/akun"
+                pathname === "/admin/tambahp"
                   ? "bg-white text-black"
                   : "hover:bg-white hover:text-black"
               }`}
@@ -81,6 +81,18 @@ function Sidebar() {
             >
               akun pegawai
             </Link>
+            <div className=" rounded-lg mt-2">
+              <Link
+                href="/"
+                className={`block px-4 py-3 rounded-lg transition duration-300 ${
+                  pathname === "/"
+                    ? "bg-white text-black"
+                    : "hover:bg-white hover:text-black"
+                }`}
+              >
+                Logout
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
