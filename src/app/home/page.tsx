@@ -12,6 +12,7 @@ interface Produk {
   createdAt: string;
   updatedAt: string;
   jumlah: number;
+  catatan?: string;
 }
 
 function HomePage() {
@@ -21,6 +22,7 @@ function HomePage() {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState<Produk[]>([]);
   const [pembayaran, setPembayaran] = useState<number>(0);
+  const [catatan, setCatatan] = useState("");
 
   useEffect(() => {
     const fetchProduk = async () => {
@@ -64,10 +66,12 @@ function HomePage() {
       const existingProduct = prev.find((p) => p.id === produk.id);
       if (existingProduct) {
         return prev.map((p) =>
-          p.id === produk.id ? { ...p, jumlah: (p.jumlah || 1) + 1 } : p
+          p.id === produk.id
+            ? { ...p, jumlah: (p.jumlah || 1) + 1, catatan: p.catatan || "" }
+            : p
         );
       } else {
-        return [...prev, { ...produk, jumlah: 1 }];
+        return [...prev, { ...produk, jumlah: 1, catatan: "" }];
       }
     });
   };
@@ -98,6 +102,16 @@ function HomePage() {
     );
   };
 
+  const handleCatatanChange = (id: number, catatanBaru: string) => {
+    setSelectedProducts((prev) => {
+      return prev.map((produk) =>
+        produk.id === id ? { ...produk, catatan: catatanBaru } : produk
+      );
+    });
+
+    console.log(`Produk ID ${id} catatan baru:`, catatanBaru);
+  };
+
   const closeSidebar = () => {
     setSidebarVisible(false);
   };
@@ -109,14 +123,21 @@ function HomePage() {
         produk: selectedProducts.map((produk) => ({
           idProduk: produk.id,
           jumlah: produk.jumlah || 1,
+          catatan: produk.catatan || "",
         })),
+        totalHarga: totalHarga,
+        totalBayar: pembayaran,
+        kembalian: kembalian >= 0 ? kembalian : 0,
+        // catatan: catatan,
       };
+
+      console.log("Payload yang dikirim:", JSON.stringify(payload, null, 2));
 
       const response = await axios.post(url, payload, {
         withCredentials: true,
       });
-
-      console.log("Transaksi berhasil dikirim:", response.data);
+      console.log("Respon dari server:", response.data);
+      console.log("catatan : ", response.data.data);
     } catch (err) {
       console.error("Gagal mengirim transaksi:", err);
     }
@@ -125,47 +146,84 @@ function HomePage() {
   const handlePrintStruk = async () => {
     const doc = new jsPDF();
 
-    doc.setFontSize(16);
-    doc.text("Struk Pembelian", 105, 10, { align: "center" });
-    doc.setFontSize(12);
-    doc.text(`Tanggal: ${new Date().toLocaleDateString("id-ID")}`, 10, 20);
+    // Tambahkan alamat
+    doc.setFontSize(10);
+    doc.text(
+      "JlN. Cihanjuang Cibaligo No.161A, Kota Cimahi, Indonesia",
+      105,
+      35,
+      {
+        align: "center",
+      }
+    );
 
-    doc.text("Detail Produk:", 10, 30);
-    let yOffset = 40;
+    // Garis pembatas
+    doc.line(10, 40, 200, 40);
+
+    // Judul Struk
+    doc.setFontSize(14);
+    doc.text("Struk Pembelian", 105, 50, { align: "center" });
+
+    doc.setFontSize(12);
+    doc.text(`Tanggal: ${new Date().toLocaleDateString("id-ID")}`, 10, 60);
+
+    doc.text("Detail Produk:", 10, 70);
+    let yOffset = 80;
 
     selectedProducts.forEach((produk, index) => {
-      doc.text(
-        `${index + 1}. ${produk.namaProduk} (x${produk.jumlah || 1}) - Rp${(
-          produk.hargaProduk * (produk.jumlah || 1)
-        ).toLocaleString("id-ID")}`,
-        10,
-        yOffset
-      );
+      const namaProduk = `${index + 1}. ${produk.namaProduk} (x${
+        produk.jumlah || 1
+      })`;
+      const harga = `Rp${(
+        produk.hargaProduk * (produk.jumlah || 1)
+      ).toLocaleString("id-ID")}`;
+
+      doc.text(namaProduk, 10, yOffset);
+      doc.text(harga, 190, yOffset, { align: "right" });
+      if (produk.catatan && produk.catatan.trim() !== "") {
+        yOffset += 7;
+        doc.setFontSize(10);
+        doc.text(`Catatan: ${produk.catatan}`, 10, yOffset);
+        doc.setFontSize(12);
+      }
       yOffset += 10;
     });
 
+    // Garis pembatas di bawah produk
+    yOffset += 5;
+    doc.line(10, yOffset, 200, yOffset);
     yOffset += 10;
-    doc.text(
-      `Total Harga: Rp${totalHarga.toLocaleString("id-ID")}`,
-      10,
-      yOffset
-    );
+
+    // Total, Pembayaran, dan Kembalian
+    doc.text("Total Harga:", 10, yOffset);
+    doc.text(`Rp${totalHarga.toLocaleString("id-ID")}`, 190, yOffset, {
+      align: "right",
+    });
+
     yOffset += 10;
-    doc.text(
-      `Pembayaran: Rp${pembayaran.toLocaleString("id-ID")}`,
-      10,
-      yOffset
-    );
+    doc.text("Pembayaran:", 10, yOffset);
+    doc.text(`Rp${pembayaran.toLocaleString("id-ID")}`, 190, yOffset, {
+      align: "right",
+    });
+
     yOffset += 10;
+    doc.text("Kembalian:", 10, yOffset);
     doc.text(
-      `Kembalian: ${
-        kembalian >= 0
-          ? `Rp${kembalian.toLocaleString("id-ID")}`
-          : "Pembayaran tidak cukup"
-      }`,
-      10,
-      yOffset
+      kembalian >= 0
+        ? `Rp${kembalian.toLocaleString("id-ID")}`
+        : "Pembayaran tidak cukup",
+      190,
+      yOffset,
+      { align: "right" }
     );
+
+    // Ucapan Terima Kasih
+    yOffset += 40;
+    doc.setFontSize(12);
+    doc.text("Terima kasih telah berbelanja!", 105, yOffset, {
+      align: "center",
+    });
+    alert("Transaksi selesai struk berhasil di cetak");
 
     doc.save("struk-pembelian.pdf");
     await kirimPesanan();
@@ -193,12 +251,12 @@ function HomePage() {
 
   return (
     <div className={`relative ${sidebarVisible ? "pr-80" : ""}`}>
-      <div className="p-5 bg-white">
+      <div className="p-5 bg-[white]">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 ">
           {produkList.map((produk) => (
             <div
               key={produk.id}
-              className="bg-white border rounded-lg shadow-md p-4 flex flex-col items-center hover:scale-105 hover:bg-[#2E5077]"
+              className="bg-[white] border rounded-lg shadow-md p-4 flex flex-col items-center hover:scale-105 hover:bg-[#EB5B00]"
             >
               <img
                 src={`${process.env.NEXT_PUBLIC_URL}${produk.fotoProduk}`}
@@ -248,7 +306,7 @@ function HomePage() {
                   <img
                     src={`${process.env.NEXT_PUBLIC_URL}${produk.fotoProduk}`}
                     alt={produk.namaProduk}
-                    className="w-16 h-16 object-cover rounded"
+                    className="w-16 h-40 object-cover rounded"
                   />
                   <div className="ml-3">
                     <h3 className="font-bold">{produk.namaProduk}</h3>
@@ -270,7 +328,18 @@ function HomePage() {
                         +
                       </button>
                     </div>
+                    <div key={produk.id} className="mt-2">
+                      <textarea
+                        value={produk.catatan || ""}
+                        onChange={(e) =>
+                          handleCatatanChange(produk.id, e.target.value)
+                        }
+                        placeholder="Tambahkan catatan..."
+                        className="w-full px-2 py-1 border rounded"
+                      />
+                    </div>
                   </div>
+
                   <button
                     className="ml-auto bg-red-500 text-white px-2 py-1 rounded"
                     onClick={() => handleHapus(produk.id)}
@@ -316,7 +385,7 @@ function HomePage() {
               </div>
               <div className="mt-4">
                 <button
-                  className="w-full bg-blue-500 text-white py-2 rounded"
+                  className="w-full bg-orange-500 text-white py-2 rounded"
                   onClick={handlePrintStruk}
                 >
                   Print Struk

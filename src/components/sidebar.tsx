@@ -1,15 +1,31 @@
 "use client";
 
+import axios from "axios";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
-function Sidebar() {
+export default function Sidebar() {
+  const router = useRouter();
   const pathname = usePathname();
+
+  const handleLogout = async () => {
+    const confirmLogout = window.confirm("Apakah Anda yakin ingin logout?");
+    if (!confirmLogout) return;
+
+    try {
+      await axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/logout`);
+      localStorage.removeItem("token");
+      alert("Anda berhasil logout");
+      router.push("/");
+    } catch (error) {
+      console.error("Logout gagal", error);
+    }
+  };
 
   return (
     <div>
-      <nav className="bg-blue-400 w-64 h-[100vh] fixed flex flex-col p-4">
+      <nav className="bg-orange-400 w-64 h-[100vh] fixed flex flex-col p-4">
         <div className="flex justify-center">
           <img
             src={"/img/y.png"}
@@ -20,84 +36,66 @@ function Sidebar() {
           />
         </div>
         <div className="space-y-2 text-white">
-          <div className="rounded-lg">
-            <Link
-              href="/admin/home"
-              className={`block px-4 py-3 rounded-lg transition duration-300 ${
-                pathname === "/admin/home"
-                  ? "bg-white text-black"
-                  : "hover:bg-white hover:text-black"
-              }`}
+          <Link
+            href="/admin/home"
+            className={`block px-4 py-3 rounded-lg transition duration-300 ${
+              pathname === "/admin/home"
+                ? "bg-white text-black"
+                : "hover:bg-white hover:text-black"
+            }`}
+          >
+            Beranda
+          </Link>
+          <Link
+            href="/admin/tambahp"
+            className={`block px-4 py-3 rounded-lg transition duration-300 ${
+              pathname === "/admin/tambahp"
+                ? "bg-white text-black"
+                : "hover:bg-white hover:text-black"
+            }`}
+          >
+            Tambah Produk
+          </Link>
+          <Link
+            href="/admin/riwayat"
+            className={`block px-4 py-3 rounded-lg transition duration-300 ${
+              pathname === "/admin/riwayat"
+                ? "bg-white text-black"
+                : "hover:bg-white hover:text-black"
+            }`}
+          >
+            Riwayat
+          </Link>
+          <Link
+            href="/auths/register"
+            className={`block px-4 py-3 rounded-lg transition duration-300 ${
+              pathname === "/auths/register"
+                ? "bg-white text-black"
+                : "hover:bg-white hover:text-black"
+            }`}
+          >
+            Tambah Akun
+          </Link>
+          <Link
+            href="/admin/akun"
+            className={`block px-4 py-3 rounded-lg transition duration-300 ${
+              pathname === "/admin/akun"
+                ? "bg-white text-black"
+                : "hover:bg-white hover:text-black"
+            }`}
+          >
+            Akun Pegawai
+          </Link>
+          <div className="rounded-lg mt-2">
+            <button
+              onClick={handleLogout}
+              className="block w-full text-left px-4 py-3 rounded-lg border border-white hover:bg-white hover:text-black"
             >
-              home
-            </Link>
-          </div>
-          <div className=" rounded-lg">
-            <Link
-              href="/admin/tambahp"
-              className={`block px-4 py-3 rounded-lg transition duration-300 ${
-                pathname === "/admin/tambahp"
-                  ? "bg-white text-black"
-                  : "hover:bg-white hover:text-black"
-              }`}
-            >
-              Tambah Produk
-            </Link>
-          </div>
-
-          <div className=" rounded-lg">
-            <Link
-              href="/admin/riwayat"
-              className={`block px-4 py-3 rounded-lg transition duration-300 ${
-                pathname === "/admin/riwayat"
-                  ? "bg-white text-black"
-                  : "hover:bg-white hover:text-black"
-              }`}
-            >
-              riwayat
-            </Link>
-          </div>
-
-          <div className=" rounded-lg">
-            <Link
-              href="/auths/register"
-              className={`block px-4 py-3 rounded-lg transition duration-300 ${
-                pathname === "/auths/register"
-                  ? "bg-white text-black"
-                  : "hover:bg-white hover:text-black"
-              }`}
-            >
-              tambah akun
-            </Link>
-          </div>
-          <div className=" rounded-lg">
-            <Link
-              href="/admin/akun"
-              className={`block px-4 py-3 rounded-lg transition duration-300 ${
-                pathname === "/admin/akun"
-                  ? "bg-white text-black"
-                  : "hover:bg-white hover:text-black"
-              }`}
-            >
-              akun pegawai
-            </Link>
-            <div className=" rounded-lg mt-2">
-              <Link
-                href="/"
-                className={`block px-4 py-3 rounded-lg transition duration-300 ${
-                  pathname === "/"
-                    ? "bg-white text-black"
-                    : "hover:bg-white hover:text-black"
-                }`}
-              >
-                Logout
-              </Link>
-            </div>
+              Logout
+            </button>
           </div>
         </div>
       </nav>
     </div>
   );
 }
-
-export default Sidebar;

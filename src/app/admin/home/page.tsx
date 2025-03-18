@@ -39,6 +39,11 @@ function Page() {
   }, []);
 
   const hapusProduk = async (id: number) => {
+    const konfirmasi = window.confirm(
+      "Apakah Anda yakin ingin menghapus produk ini?"
+    );
+    if (!konfirmasi) return;
+
     try {
       await axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/produk/${id}`, {
         withCredentials: true,

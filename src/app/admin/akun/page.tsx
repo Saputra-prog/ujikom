@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Sidebar from "@/components/sidebar";
+import { FiTrash2 } from "react-icons/fi";
 
 interface User {
   id: number;
@@ -35,14 +36,29 @@ export default function UserTable() {
     fetchData();
   }, []);
 
+  const hapusUser = async (id: number) => {
+    if (!window.confirm("Apakah Anda yakin ingin menghapus akun ini?")) return;
+
+    try {
+      await axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/user/${id}`, {
+        withCredentials: true,
+      });
+      setUsers(users.filter((user) => user.id !== id));
+    } catch (err) {
+      console.error("Gagal menghapus user:", err);
+      setError("Gagal menghapus user, silakan coba lagi.");
+    }
+    alert("akun berhasil di hapus");
+  };
+
   if (error) {
     return <p className="text-red-500">{error}</p>;
   }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-r from-blue-400 via-white to-blue-400">
+    <div className="flex min-h-screen bg-gradient-to-r from-orange-400 via-white to-orange-400">
       <Sidebar />
-      <div className="overflow-x-auto w-full max-w-5xl justify-center items-center ml-72 mr-8 mt-8 backdrop: ">
+      <div className="overflow-x-auto w-full max-w-5xl justify-center items-center ml-72 mr-8 mt-8">
         <h2 className="text-xl font-bold mb-4 text-center">Daftar Akun</h2>
         <table className="w-full bg-white border border-gray-300 shadow-md">
           <thead>
@@ -54,6 +70,7 @@ export default function UserTable() {
               <th className="px-4 py-2 border">Alamat</th>
               <th className="px-4 py-2 border">Role</th>
               <th className="px-4 py-2 border">Dibuat</th>
+              <th className="px-4 py-2 border">Hapus</th>
             </tr>
           </thead>
           <tbody>
@@ -72,6 +89,14 @@ export default function UserTable() {
                 </td>
                 <td className="px-4 py-2 border">
                   {new Date(user.createdAt).toLocaleDateString()}
+                </td>
+                <td className="px-4 py-2 border">
+                  <button
+                    onClick={() => hapusUser(user.id)}
+                    className="text-red-600 hover:text-red-800"
+                  >
+                    <FiTrash2 size={20} />
+                  </button>
                 </td>
               </tr>
             ))}

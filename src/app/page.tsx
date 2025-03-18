@@ -35,12 +35,11 @@ const LoginPage = () => {
   }
 
   return (
-    <div
-      className="flex justify-center items-center min-h-screen bg-cover bg-center p-4 bg-gradient-to-r from-blue-400  via-green-400 to-blue-400"
-      // style={{ backgroundImage: "url('/img/kasir1.jpeg')" }}
-    >
+    <div className="flex justify-center items-center min-h-screen bg-cover bg-center p-4 bg-gradient-to-r from-orange-400  to-white">
       <div className="w-full max-w-md bg-white bg-opacity-90 rounded-xl shadow-xl shadow-slate-600 p-8 space-y-6">
-        <h1 className="text-3xl font-bold text-center text-blue-600">Login</h1>
+        <h1 className="text-3xl font-bold text-center text-orange-600">
+          Login
+        </h1>
 
         <div className="space-y-4">
           <div className="relative">
@@ -56,7 +55,7 @@ const LoginPage = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Masukkan nama"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               required
             />
           </div>
@@ -74,14 +73,14 @@ const LoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Masukkan password"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               required
             />
           </div>
         </div>
 
         <button
-          className="w-full bg-blue-500 text-white py-2 rounded-lg text-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+          className="w-full bg-orange-500 text-white py-2 rounded-lg text-lg font-semibold hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
           onClick={LOGIN}
         >
           LOGIN

@@ -68,7 +68,7 @@ function Page() {
 
       console.log("Registrasi berhasil:", response.data);
       alert("akun berhasil dibuat");
-      router.push("/");
+      router.push("/admin/home");
     } catch (error: any) {
       console.error("Error registrasi:", error.response?.data || error.message);
 
@@ -83,7 +83,7 @@ function Page() {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-400 via-white to-blue-400">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-orange-400 via-white to-orange-400">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -108,7 +108,7 @@ function Page() {
           type="text"
           value={formData.username}
           onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
           required
         />
 
@@ -123,7 +123,7 @@ function Page() {
           type="text"
           value={formData.noHp}
           onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
           required
         />
 
@@ -138,7 +138,7 @@ function Page() {
           type="text"
           value={formData.alamat}
           onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
           required
         />
 
@@ -153,7 +153,7 @@ function Page() {
           type="email"
           value={formData.email}
           onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
           required
         />
 
@@ -168,7 +168,7 @@ function Page() {
           type="password"
           value={formData.password}
           onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
           required
         />
 
@@ -182,7 +182,7 @@ function Page() {
           id="role"
           value={formData.role}
           onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
           required
         >
           <option value="" disabled>
@@ -194,7 +194,7 @@ function Page() {
         <div className="flex justify-center mt-6">
           <button
             type="submit"
-            className="bg-blue-400 text-white py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="bg-blue-400 text-white py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
           >
             BUAT AKUN
           </button>

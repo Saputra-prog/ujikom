@@ -62,10 +62,10 @@ const tambahmenu = () => {
   return (
     <div className="flex min-h-screen">
       <Sidebar />
-      <div className="flex justify-center items-center w-full bg-gradient-to- from-blue-400 via-white to-blue-400">
+      <div className="flex justify-center items-center w-full bg-gradient-to- from-orange-400 via-white to-orange-400 translate-x-48">
         <form
           onSubmit={handleSubmit}
-          className="w-[500px] bg-blue-400 rounded-lg shadow-xl shadow-slate-600 p-6"
+          className="w-[500px] bg-orange-400 rounded-lg shadow-xl shadow-slate-600 p-6"
         >
           <h1 className="text-2xl font-bold text-center mb-4">Tambah Produk</h1>
           <label
